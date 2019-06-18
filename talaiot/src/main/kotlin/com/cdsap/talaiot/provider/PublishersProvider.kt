@@ -47,6 +47,16 @@ class PublishersProvider(
                     )
                 )
             }
+
+            signalFxPublisher?.apply {
+                publishers.add(
+                    SignalFxPublisher(
+                        this,
+                        logger
+                    )
+                )
+            }
+
             taskDependencyGraphPublisher?.apply {
                 publishers.add(
                     TaskDependencyGraphPublisher(

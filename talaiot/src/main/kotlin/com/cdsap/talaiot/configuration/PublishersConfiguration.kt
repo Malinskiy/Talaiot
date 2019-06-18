@@ -29,6 +29,10 @@ class PublishersConfiguration(
      */
     var influxDbPublisher: InfluxDbPublisherConfiguration? = null
     /**
+     * Access to the configuration of SignalFxPublisher
+     */
+    var signalFxPublisher: SignalFxPublisherConfiguration? = null
+    /**
      * Access to the configuration of OutputPublisher
      */
     var outputPublisher: OutputPublisherConfiguration? = null
