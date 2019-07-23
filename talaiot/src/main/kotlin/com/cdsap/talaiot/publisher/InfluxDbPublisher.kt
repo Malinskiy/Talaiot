@@ -87,7 +87,7 @@ class InfluxDbPublisher(
                 .tag("workerId", task.workerId)
                 .tag("critical", task.critical.toString())
                 .apply {
-                    report.customProperties.properties.forEach { (k, v) ->
+                    report.customProperties.taskProperties.forEach { (k, v) ->
                         tag(k, v)
                     }
                 }
@@ -99,7 +99,7 @@ class InfluxDbPublisher(
 
     private fun createBuildPoint(report: ExecutionReport): Point {
         val buildMeta = report.flattenBuildEnv()
-        val buildMeasurement = Point.measurement(influxDbPublisherConfiguration.buildMetricName)
+        return Point.measurement(influxDbPublisherConfiguration.buildMetricName)
             .time(report.endMs?.toLong() ?: System.currentTimeMillis(), TimeUnit.MILLISECONDS)
             .apply {
                 buildMeta.forEach { (k, v) ->
@@ -109,6 +109,11 @@ class InfluxDbPublisher(
             .addField("duration", report.durationMs?.toLong() ?: 0L)
             .addField("configuration", report.configurationDurationMs?.toLong() ?: 0L)
             .addField("success", report.success)
+            .apply {
+                report.customProperties.buildProperties.forEach { (k, v) ->
+                    tag(k, v)
+                }
+            }
             .apply {
                 report.environment.osVersion?.let { addField("osVersion", it) }
                 report.environment.maxWorkers?.let { addField("maxWorkers", it.toLong()) }
@@ -133,11 +138,9 @@ class InfluxDbPublisher(
                 report.beginMs?.let { addField("start", it.toDouble()) }
                 report.rootProject?.let { addField("rootProject", it) }
                 report.requestedTasks?.let { addField("requestedTasks", it) }
-                report.scanLink?.let { addField("scanLink", it) }
+                report.scanLink?.let<String, Unit> { addField("scanLink", it) }
             }
-
             .build()
-        return buildMeasurement
     }
 
     private fun createDb(): InfluxDB {

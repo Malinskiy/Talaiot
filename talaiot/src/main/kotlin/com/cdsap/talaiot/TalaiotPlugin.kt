@@ -31,7 +31,7 @@ class TalaiotPlugin : Plugin<Project> {
      * Additionally we need the a list of metrics and providers that will be used during the execution.
      *
      * @param extension Talaiot extension that contains the configuration
-     * @param project Gradle project used to to retrieve properties and build information.
+     * @param project Gradle project used to to retrieve buildProperties and build information.
      */
     private fun initPlugin(extension: TalaiotExtension, project: Project) {
         val listener = TalaiotListener(project, extension)

@@ -56,7 +56,7 @@ data class ExecutionReport(
         requestedTasks?.let { map["requestedTasks"] = it }
 
         //These come last to have an ability to override calculation
-        map.putAll(customProperties.properties)
+        map.putAll(customProperties.buildProperties)
 
         return map.filter { (k, v) -> v != "undefined" }
     }
@@ -124,7 +124,8 @@ data class Switches(
 )
 
 data class CustomProperties(
-    var properties: MutableMap<String, String> = mutableMapOf()
+    var buildProperties: MutableMap<String, String> = mutableMapOf(),
+    var taskProperties: MutableMap<String, String> = mutableMapOf()
 )
 
 data class Plugin(
