@@ -138,7 +138,7 @@ class InfluxDbPublisher(
                 report.beginMs?.let { addField("start", it.toDouble()) }
                 report.rootProject?.let { addField("rootProject", it) }
                 report.requestedTasks?.let { addField("requestedTasks", it) }
-                report.scanLink?.let<String, Unit> { addField("scanLink", it) }
+                report.scanLink?.let { addField("scanLink", it) }
             }
             .build()
     }
